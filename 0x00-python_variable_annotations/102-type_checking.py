@@ -3,12 +3,12 @@
 from typing import List, Tuple
 
 
-def zoom_array(lst: Tuple[int, ...], factor: int = 2) -> List[int]:
+def zoom_array(lst: Tuple[int, ...], factor: int = 2) -> Tuple[int, ...]:
     zoomed_in: List[int] = [
         item for item in lst
         for i in range(factor)
     ]
-    return zoomed_in
+    return tuple(zoomed_in)
 
 
 array: Tuple[int, ...] = (12, 72, 91)
