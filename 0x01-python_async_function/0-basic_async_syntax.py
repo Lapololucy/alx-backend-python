@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 import asyncio
 from random import uniform
 
@@ -14,7 +13,7 @@ from random import uniform
 
 async def wait_random(max_delay: int = 10) -> float:
     """
-    Generates a random delay and returns it after waiting.
+    Generate a random delay and return it after waiting.
 
     Args:
         max_delay (int): Maximum delay in seconds (default is 10).
@@ -25,6 +24,7 @@ async def wait_random(max_delay: int = 10) -> float:
     delay = uniform(0, max_delay)
     await asyncio.sleep(delay)
     return delay
+
 
 if __name__ == '__main__':
     print(asyncio.run(wait_random()))
