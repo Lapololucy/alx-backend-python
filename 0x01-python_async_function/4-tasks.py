@@ -1,31 +1,33 @@
 #!/usr/bin/env python3
-
-
+"""Execute multiple coroutines at the same time with async
+mandatory
+"""
+import asyncio
 from typing import List
 
 
-''' Take the code from wait_n and alter it into a new function task_wait_n.
-    The code is nearly identical to wait_n except task_wait_random is being
-    called.
-'''
+wait_random = __import__('0-basic_async_syntax').wait_random
+task_wait_random = __import__('3-tasks').task_wait_random
 
 
 async def task_wait_n(n: int, max_delay: int) -> List[float]:
-    '''Runs an async function for n times and adds the results into a list'''
-    modified_random = __import__('3-tasks').task_wait_random
+    """Spawn task_wait_random function n times
 
-    delay_list = []
-    i = 0
+    Args:
+        n (int): number of time wait _random should be callled.
+        max_delay (int): delay period
 
-    while i < n:
-        delay_list.append(await modified_random(max_delay))
-        i += 1
+    Returns:
+        List[float]: List of all the delays in sorted order
+    """
+    # gather with an unpacked list of awaitables
+    res = await asyncio.gather(*(task_wait_random(max_delay)
+                               for _ in range(n)))
 
-    return sorted(delay_list)
+    # Sort result in ascending order
+    for i in range(len(res)):
+        for j in range(i+1, len(res)):
+            if (res[i] > res[j]):
+                res[i], res[j] = res[j], res[i]
 
-
-if __name__ == '__main__':
-    import asyncio
-
-    print(task_wait_n.__doc__)
-    print(asyncio.run(task_wait_n(3, 4)))
+    return res
